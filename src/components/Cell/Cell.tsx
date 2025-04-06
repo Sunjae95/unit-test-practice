@@ -1,5 +1,14 @@
 import React from "react";
 
-export const Cell = () => {
-  return <button>Cell</button>;
+interface CellProps {
+  row: number;
+  column: number;
+  isOpen: boolean;
+  onClick: (params: { row: number; column: number }) => void;
+}
+
+export const Cell = ({ row, column, isOpen, onClick }: CellProps) => {
+  return (
+    <button onClick={() => onClick({ row, column })} disabled={isOpen}></button>
+  );
 };
