@@ -1,50 +1,13 @@
-# React + TypeScript + Vite
+## 구현 목표
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- 격자판(Board)을 생성
+- 일정 수의 지뢰(Mines)를 무작위로 배치
+- 칸을 클릭하면:
+  - 지뢰면 게임 오버
+  - 지뢰가 아니면 주변 지뢰 개수 표시
+  - 주변에 지뢰가 하나도 없다면 인접한 칸 자동 오픈 (재귀)
+- 모든 지뢰 외 칸을 열면 승리
 
-Currently, two official plugins are available:
+## UI Component Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+![UI Component Architecture](./images/ui_component_architecture.png)
