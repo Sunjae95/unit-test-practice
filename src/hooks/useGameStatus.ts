@@ -57,7 +57,6 @@ export const useGameStatus = (
     const dirs = [-1, 0, 1];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        if (board[r][c].isMine) continue;
         let count = 0;
         dirs.forEach((dr) =>
           dirs.forEach((dc) => {
