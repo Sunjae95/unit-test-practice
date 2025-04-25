@@ -1,12 +1,7 @@
 import React from "react";
+import { CellType } from "../../hooks/useGameStatus";
 
-export interface CellProps {
-  row: number;
-  column: number;
-  isOpen: boolean;
-  isFlag: boolean;
-  isMine: boolean;
-  mineCount: number;
+export interface CellProps extends CellType {
   onClick: (params: { row: number; column: number }) => void;
   onClickContext: (params: { row: number; column: number }) => void;
 }
