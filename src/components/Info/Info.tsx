@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./Info.module.css";
 import { CellProps } from "../Cell/Cell";
 
 export interface InfoProps {
@@ -8,7 +9,7 @@ export interface InfoProps {
 
 export const Info = ({ cellList, onReset }: InfoProps) => {
   return (
-    <section aria-label="info">
+    <section className={styles.info} aria-label="info">
       <div role="region" aria-label="mineCounter">
         <span>
           {cellList.reduce((total, row) => {
@@ -22,7 +23,11 @@ export const Info = ({ cellList, onReset }: InfoProps) => {
         </span>
       </div>
 
-      <button aria-label="reset" onClick={onReset}>
+      <button
+        className={styles.resetButton}
+        aria-label="reset"
+        onClick={onReset}
+      >
         restart
       </button>
     </section>

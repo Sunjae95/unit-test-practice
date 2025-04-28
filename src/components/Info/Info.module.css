@@ -1,0 +1,35 @@
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+  margin: 8px auto;
+  padding: 8px 12px;
+  background-color: #c0c0c0;
+  border: 2px solid #666;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* 남은 지뢰 수 표시 */
+.mineCounter {
+  font-size: 1.2rem;
+}
+
+/* 리셋 버튼 */
+.resetButton {
+  padding: 4px 8px;
+  background-color: #e0e0e0;
+  border: 1px solid #999;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.resetButton:hover {
+  background-color: #d6d6d6;
+}
+
+.resetButton:active {
+  background-color: #bbb;
+}
