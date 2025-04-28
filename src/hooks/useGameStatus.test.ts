@@ -41,7 +41,7 @@ test("깃발을 토글하면 isFlag 상태가 변경된다.", () => {
   const { result } = renderHook(() => useGameStatus(5, 5, 5));
 
   act(() => {
-    result.current.toggleFlag(0, 0);
+    result.current.toggleFlag({ row: 0, column: 0 });
   });
 
   expect(result.current.board[0][0].isFlag).toBe(true);
@@ -51,10 +51,10 @@ test("깃발을 두번 토글하면 isFlag 상태가 원상태로 돌아온다."
   const { result } = renderHook(() => useGameStatus(5, 5, 5));
 
   act(() => {
-    result.current.toggleFlag(0, 0);
+    result.current.toggleFlag({ row: 0, column: 0 });
   });
   act(() => {
-    result.current.toggleFlag(0, 0);
+    result.current.toggleFlag({ row: 0, column: 0 });
   });
 
   expect(result.current.board[0][0].isFlag).toBe(false);
@@ -64,10 +64,10 @@ test("열린 셀에 깃발을 토글할 수 없다.", () => {
   const { result } = renderHook(() => useGameStatus(5, 5, 5));
 
   act(() => {
-    result.current.openCell(0, 0);
+    result.current.openCell({ row: 0, column: 0 });
   });
   act(() => {
-    result.current.toggleFlag(0, 0);
+    result.current.toggleFlag({ row: 0, column: 0 });
   });
 
   expect(result.current.board[0][0].isFlag).toBe(false);
@@ -77,10 +77,10 @@ test("깃발이 있는 셀은 열리지 않는다.", () => {
   const { result } = renderHook(() => useGameStatus(5, 5, 5));
 
   act(() => {
-    result.current.toggleFlag(0, 0);
+    result.current.toggleFlag({ row: 0, column: 0 });
   });
   act(() => {
-    result.current.openCell(0, 0);
+    result.current.openCell({ row: 0, column: 0 });
   });
 
   expect(result.current.board[0][0].isFlag).toBe(true);
