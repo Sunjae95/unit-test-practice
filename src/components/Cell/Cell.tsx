@@ -1,4 +1,6 @@
 import React from "react";
+import styles from "./Cell.module.css";
+
 import { CellType } from "../../hooks/useGameStatus";
 
 export interface CellProps extends CellType {
@@ -22,10 +24,29 @@ export const Cell = ({
     return mineCount ? mineCount : "";
   };
 
+  const getClassNames = () => {
+    const classNames = [styles.cell];
+
+    if (isOpen) {
+      classNames.push(styles.open);
+
+      if (isMine) classNames.push(styles.mine);
+      if (mineCount > 0) classNames.push(styles[`number${mineCount}`]);
+    }
+
+    if (isFlag) {
+      classNames.push(styles.flag);
+    }
+
+    return classNames.join(" ");
+  };
+
   return (
     <button
+      className={getClassNames()}
       onClick={() => onClick({ row, column })}
-      onContextMenu={() => {
+      onContextMenu={(e) => {
+        e.preventDefault();
         if (isOpen) return;
         onClickContext({ row, column });
       }}

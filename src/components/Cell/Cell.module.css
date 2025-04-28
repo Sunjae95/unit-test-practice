@@ -1,0 +1,62 @@
+.cell {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  user-select: none;
+  cursor: pointer;
+  background-color: #c0c0c0; /* 기본 배경 (열리기 전) */
+}
+
+/* 열려 있는 셀 */
+.open {
+  background-color: #e0e0e0;
+  border: 1px solid #aaa;
+}
+
+/* 깃발 표시 */
+.flag {
+  background-color: #c0c0c0;
+  color: red;
+}
+
+/* 지뢰 표시 */
+.mine {
+  background-color: #ff4d4f;
+  color: black;
+}
+
+/* 터진 지뢰 (게임 오버) */
+.exploded {
+  background-color: black;
+  color: white;
+}
+
+/* 숫자별 색상 */
+.number1 {
+  color: blue;
+}
+.number2 {
+  color: green;
+}
+.number3 {
+  color: red;
+}
+.number4 {
+  color: navy;
+}
+.number5 {
+  color: maroon;
+}
+.number6 {
+  color: turquoise;
+}
+.number7 {
+  color: black;
+}
+.number8 {
+  color: gray;
+}
