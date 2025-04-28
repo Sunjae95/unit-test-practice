@@ -1,8 +1,9 @@
 import React from "react";
 import { Cell, CellProps } from "../Cell/Cell";
+import { CellType } from "../../hooks/useGameStatus";
 
 export interface BoardProps {
-  cellList: Omit<CellProps, "onClick" | "onClickContext">[][];
+  cellList: CellType[][];
   onClick: CellProps["onClick"];
   onContextClick: CellProps["onClickContext"];
 }
