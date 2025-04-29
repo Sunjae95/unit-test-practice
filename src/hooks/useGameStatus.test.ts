@@ -19,42 +19,6 @@ test("각 셀의 mineCount는 자신과 주변 8칸의 지뢰 개수를 정확�
   expect(mineCount).toEqual(aroundMineCount);
 });
 
-test("깃발을 토글하면 isFlag 상태가 변경된다.", () => {
-  const { result } = renderHook(() => useGameStatus(5, 5, 5));
-
-  act(() => {
-    result.current.toggleFlag({ row: 0, column: 0 });
-  });
-
-  expect(result.current.board[0][0].isFlag).toBe(true);
-});
-
-test("깃발을 두번 토글하면 isFlag 상태가 원상태로 돌아온다.", () => {
-  const { result } = renderHook(() => useGameStatus(5, 5, 5));
-
-  act(() => {
-    result.current.toggleFlag({ row: 0, column: 0 });
-  });
-  act(() => {
-    result.current.toggleFlag({ row: 0, column: 0 });
-  });
-
-  expect(result.current.board[0][0].isFlag).toBe(false);
-});
-
-test("열린 셀에 깃발을 토글할 수 없다.", () => {
-  const { result } = renderHook(() => useGameStatus(5, 5, 5));
-
-  act(() => {
-    result.current.openCell({ row: 0, column: 0 });
-  });
-  act(() => {
-    result.current.toggleFlag({ row: 0, column: 0 });
-  });
-
-  expect(result.current.board[0][0].isFlag).toBe(false);
-});
-
 test("깃발이 있는 셀은 열리지 않는다.", () => {
   const { result } = renderHook(() => useGameStatus(5, 5, 5));
 

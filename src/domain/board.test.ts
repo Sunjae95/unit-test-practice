@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { generateBoard } from "./board";
+import { generateBoard, toggleBoard } from "./board";
 
 describe("보드판 생성", () => {
   test("N * M개의 cell을 가진 보드판을 생성한다.", () => {
@@ -26,5 +26,49 @@ describe("보드판 생성", () => {
     expect(sut.flat().filter(({ isMine }) => isMine).length).toBe(
       mock.rows * mock.cols
     );
+  });
+});
+
+describe("보드판 토글", () => {
+  const cell = {
+    row: 0,
+    column: 0,
+    isFlag: false,
+    isMine: true,
+    isOpen: false,
+    mineCount: 0,
+  };
+
+  test("임의의 위치를 1번 토글한다.", () => {
+    const board = [[cell]];
+    const { flagCount } = toggleBoard({
+      board,
+      row: 0,
+      column: 0,
+    });
+
+    expect(flagCount).toBe(1);
+  });
+
+  test("임의의 위치를 2번 토글한다.", () => {
+    const board = [[{ ...cell, isFlag: true }]];
+    const { flagCount } = toggleBoard({
+      board,
+      row: 0,
+      column: 0,
+    });
+
+    expect(flagCount).toBe(0);
+  });
+
+  test("열려있는 Cell은 토글되지 않는다.", () => {
+    const board = [[{ ...cell, isOpen: true }]];
+    const { flagCount } = toggleBoard({
+      board,
+      row: 0,
+      column: 0,
+    });
+
+    expect(flagCount).toBe(0);
   });
 });

@@ -54,3 +54,21 @@ export const generateBoard = ({
 
   return board;
 };
+
+type ToggleBoardParams = { board: CellType[][]; row: number; column: number };
+
+export const toggleBoard = ({ board, row, column }: ToggleBoardParams) => {
+  const toggledBoard = board.map((r, ri) =>
+    r.map((cell, ci) => {
+      if (ri === row && ci === column) {
+        if (cell.isOpen) return cell;
+        return { ...cell, isFlag: !cell.isFlag };
+      }
+
+      return cell;
+    })
+  );
+  const flagCount = toggledBoard.flat().filter(({ isFlag }) => isFlag).length;
+
+  return { board: toggledBoard, flagCount };
+};

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { generateBoard } from "../domain/board";
+import { generateBoard, toggleBoard } from "../domain/board";
 
 export type CellType = {
   row: number;
@@ -27,20 +27,14 @@ export const useGameStatus = (
     setBoard(newBoard);
   }, [rows, cols, mineCount]);
 
+  // row, column, setFlagCount
   const toggleFlag = ({ row, column }: { row: number; column: number }) => {
-    setBoard((prev) =>
-      prev.map((r, ri) =>
-        r.map((cell, ci) => {
-          if (ri === row && ci === column) {
-            if (cell.isOpen) return cell; // 열린 셀은 깃발 못 바꿈
-            const isFlagging = !cell.isFlag;
-            setFlagCount((prev) => prev + (isFlagging ? 1 : -1));
-            return { ...cell, isFlag: isFlagging };
-          }
-          return cell;
-        })
-      )
-    );
+    setBoard((prev) => {
+      const { board, flagCount } = toggleBoard({ board: prev, row, column });
+      setFlagCount(flagCount);
+
+      return board;
+    });
   };
 
   const openCell = ({ row, column }: { row: number; column: number }) => {
