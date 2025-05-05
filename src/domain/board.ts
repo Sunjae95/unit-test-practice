@@ -68,7 +68,6 @@ export const toggleBoard = ({ board, row, column }: ToggleBoardParams) => {
       return cell;
     })
   );
-  const flagCount = toggledBoard.flat().filter(({ isFlag }) => isFlag).length;
 
-  return { board: toggledBoard, flagCount };
+  return toggledBoard;
 };

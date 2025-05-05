@@ -19,7 +19,6 @@ export const useGameStatus = (
 ) => {
   const [board, setBoard] = useState<CellType[][]>([]);
   const [status, setStatus] = useState<GameStatus>("playing");
-  const [flagCount, setFlagCount] = useState(0);
 
   // 1. 초기 보드 생성
   useEffect(() => {
@@ -29,12 +28,7 @@ export const useGameStatus = (
 
   // row, column, setFlagCount
   const toggleFlag = ({ row, column }: { row: number; column: number }) => {
-    setBoard((prev) => {
-      const { board, flagCount } = toggleBoard({ board: prev, row, column });
-      setFlagCount(flagCount);
-
-      return board;
-    });
+    setBoard((board) => toggleBoard({ board, row, column }));
   };
 
   const openCell = ({ row, column }: { row: number; column: number }) => {
@@ -74,7 +68,6 @@ export const useGameStatus = (
   return {
     board,
     gameStatus: status,
-    flagCount,
     mineCount,
     toggleFlag,
     openCell,
