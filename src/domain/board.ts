@@ -71,3 +71,43 @@ export const toggleBoard = ({ board, row, column }: ToggleBoardParams) => {
 
   return toggledBoard;
 };
+
+export const openCell = ({ board, row, column }: ToggleBoardParams) => {
+  if (board[row][column].isFlag) return board;
+
+  const next = board.map((r) => r.map((cell) => ({ ...cell })));
+  const maxRow = board.length;
+  const maxColumn = board[0].length;
+
+  const openRecursive = (r: number, c: number) => {
+    [-1, 0, 1].forEach((dr) =>
+      [-1, 0, 1].forEach((dc) => {
+        const nr = r + dr;
+        const nc = c + dc;
+
+        if (
+          (dr === 0 && dc === 0) ||
+          nr < 0 ||
+          nr >= maxRow ||
+          nc < 0 ||
+          nc >= maxColumn ||
+          next[nr][nc].isOpen ||
+          next[nr][nc].isFlag ||
+          next[nr][nc].isMine
+        )
+          return;
+
+        next[nr][nc].isOpen = true;
+        openRecursive(nr, nc);
+      })
+    );
+  };
+
+  next[row][column].isOpen = true;
+
+  if (next[row][column].isMine) return next;
+
+  openRecursive(row, column);
+
+  return next;
+};

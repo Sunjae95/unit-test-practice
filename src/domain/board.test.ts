@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { generateBoard, toggleBoard } from "./board";
+import { generateBoard, openCell, toggleBoard } from "./board";
 
 describe("보드판 생성", () => {
   test("N * M개의 cell을 가진 보드판을 생성한다.", () => {
@@ -70,5 +70,39 @@ describe("보드판 토글", () => {
     });
 
     expect(sut[0][0].isFlag).toBe(false);
+  });
+});
+
+describe(`
+   🚩  💣  o
+   o   o   o
+   o   o   o`, () => {
+  const board = Array.from({ length: 3 }, (_, row) =>
+    Array.from({ length: 3 }, (_, column) => ({
+      isFlag: row === 0 && column === 0,
+      isOpen: false,
+      row,
+      column,
+      isMine: row === 0 && column === 1,
+      mineCount: (row === 0 && column === 1) || row === 2 ? 0 : 1,
+    }))
+  );
+
+  test("지뢰가 아닌 곳을 클릭할 때 연쇄적으로 열린다.", () => {
+    const sut = openCell({ board, row: 1, column: 1 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(7);
+  });
+
+  test("지뢰를 클릭하면 지뢰만 열린다.", () => {
+    const sut = openCell({ board, row: 0, column: 1 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(1);
+  });
+
+  test("깃발을 클릭하면 열리지 않는다.", () => {
+    const sut = openCell({ board, row: 0, column: 0 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(0);
   });
 });
