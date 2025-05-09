@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { generateBoard, toggleBoard } from "./board";
+import { generateBoard, openCell, toggleBoard } from "./board";
 
 describe("보드판 생성", () => {
   test("N * M개의 cell을 가진 보드판을 생성한다.", () => {
@@ -70,5 +70,58 @@ describe("보드판 토글", () => {
     });
 
     expect(sut[0][0].isFlag).toBe(false);
+  });
+});
+
+describe(`
+   🚩  💣  x
+   x   x   x
+   x   x   o`, () => {
+  const board = Array.from({ length: 3 }, (_, row) =>
+    Array.from({ length: 3 }, (_, column) => ({
+      isFlag: row === 0 && column === 0,
+      isOpen: row === 2 && column === 2,
+      row,
+      column,
+      isMine: row === 0 && column === 1,
+      mineCount:
+        (row === 0 && column === 0) ||
+        (row === 0 && column === 2) ||
+        (row === 1 && column === 0) ||
+        (row === 1 && column === 1) ||
+        (row === 1 && column === 2)
+          ? 1
+          : 0,
+    }))
+  );
+
+  test("깃발은 클릭되지 않는다.", () => {
+    const sut = openCell({ board, row: 0, column: 0 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(1);
+  });
+
+  test("열린곳은 클릭되지 않는다.", () => {
+    const sut = openCell({ board, row: 2, column: 2 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(1);
+  });
+
+  test("지뢰라면 지뢰만 열린다.", () => {
+    const sut = openCell({ board, row: 0, column: 1 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(2);
+  });
+
+  test("주변에 지뢰가 있다면 연쇄적으로 열리지 않는다.", () => {
+    const sut = openCell({ board, row: 1, column: 1 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(2);
+  });
+
+  test("주변에 지뢰가 없으면 연쇄적으로 열린다.", () => {
+    const sut = openCell({ board, row: 2, column: 1 });
+
+    expect(sut.flat().filter(({ isOpen }) => isOpen).length).toBe(6);
   });
 });
