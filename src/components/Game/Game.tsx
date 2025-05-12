@@ -9,7 +9,7 @@ export const Game = () => {
   return (
     <div className={styles.game}>
       <Info cellList={board} onReset={() => {}} />
-      <Board cellList={board} onClick={openCell} onContextClick={toggleFlag} />
+      <Board board={board} onClick={openCell} onContextClick={toggleFlag} />
     </div>
   );
 };

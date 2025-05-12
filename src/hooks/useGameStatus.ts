@@ -17,13 +17,11 @@ export const useGameStatus = (
 ) => {
   const [board, setBoard] = useState<CellType[][]>([]);
 
-  // 1. 초기 보드 생성
   useEffect(() => {
     const newBoard = generateBoard({ rows, cols, mineCount });
     setBoard(newBoard);
   }, [rows, cols, mineCount]);
 
-  // row, column, setFlagCount
   const toggleFlag = ({ row, column }: { row: number; column: number }) => {
     setBoard((board) => toggleBoard({ board, row, column }));
   };
@@ -34,8 +32,6 @@ export const useGameStatus = (
 
   return {
     board,
-    gameStatus: status,
-    mineCount,
     toggleFlag,
     openCell: openBoard,
   };

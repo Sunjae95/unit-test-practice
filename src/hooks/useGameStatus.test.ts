@@ -1,34 +1,41 @@
-// import { act, renderHook } from "@testing-library/react";
-// import { expect, test } from "vitest";
-// import { useGameStatus } from "./useGameStatus";
+import { test, vi } from "vitest";
+import * as boardDomain from "../domain/board";
 
-// test("각 셀의 mineCount는 자신과 주변 8칸의 지뢰 개수를 정확히 나타낸다.", () => {
-//   const { result } = renderHook(() => useGameStatus(5, 5, 5));
-//   const board = result.current.board;
-//   const mineCount = board[1][1].mineCount;
-//   const aroundMineCount = [0, 1, 2].reduce(
-//     (acc, row) =>
-//       acc +
-//       [0, 1, 2].reduce(
-//         (acc, column) => acc + Number(board[row][column].isMine),
-//         0
-//       ),
-//     0
-//   );
+/**
+ * 🚩  💣  x
+ * x   x   x
+ * x   x   o
+ */
+const mockBoard = Array.from({ length: 3 }, (_, row) =>
+  Array.from({ length: 3 }, (_, column) => ({
+    isFlag: row === 0 && column === 0,
+    isOpen: row === 2 && column === 2,
+    row,
+    column,
+    isMine: row === 0 && column === 1,
+    mineCount:
+      (row === 0 && column === 0) ||
+      (row === 0 && column === 2) ||
+      (row === 1 && column === 0) ||
+      (row === 1 && column === 1) ||
+      (row === 1 && column === 2)
+        ? 1
+        : 0,
+  }))
+);
 
-//   expect(mineCount).toEqual(aroundMineCount);
-// });
+vi.mock("../domain/board", async () => {
+  const actual = await vi.importActual<typeof boardDomain>("../domain/board");
+  return {
+    ...actual,
+    generateBoard: vi.fn(() => mockBoard),
+  };
+});
 
-// test("깃발이 있는 셀은 열리지 않는다.", () => {
-//   const { result } = renderHook(() => useGameStatus(5, 5, 5));
+test.todo("깃발을 토글하면 허용깃발 개수가 변경된다.");
 
-//   act(() => {
-//     result.current.toggleFlag({ row: 0, column: 0 });
-//   });
-//   act(() => {
-//     result.current.openCell({ row: 0, column: 0 });
-//   });
+test.todo("지뢰가 존재하는 cell에 깃발이 모두 존재하면 승리한다.");
 
-//   expect(result.current.board[0][0].isFlag).toBe(true);
-//   expect(result.current.board[0][0].isOpen).toBe(false);
-// });
+test.todo("지뢰를 발견하면 패배한다.");
+
+test.todo("게임을 재시작한다.");
