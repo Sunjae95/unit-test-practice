@@ -6,7 +6,7 @@ test("n x m 격자판 생성", () => {
   const [n, m] = [5, 5];
   const onClickSpy = vi.fn();
   const onClickContextSpy = vi.fn();
-  const cellList: BoardProps["cellList"] = Array.from({ length: n }, (_, row) =>
+  const cellList: BoardProps["board"] = Array.from({ length: n }, (_, row) =>
     Array.from({ length: m }, (_, column) => ({
       row,
       column,
@@ -18,7 +18,7 @@ test("n x m 격자판 생성", () => {
   );
   render(
     <Board
-      cellList={cellList}
+      board={cellList}
       onClick={onClickSpy}
       onContextClick={onClickContextSpy}
     />

@@ -6,15 +6,15 @@ import { CellType } from "../../hooks/useGameStatus";
 import styles from "./Board.module.css";
 
 export interface BoardProps {
-  cellList: CellType[][];
+  board: CellType[][];
   onClick: CellProps["onClick"];
   onContextClick: CellProps["onClickContext"];
 }
 
-export const Board = ({ cellList, onClick, onContextClick }: BoardProps) => {
+export const Board = ({ board, onClick, onContextClick }: BoardProps) => {
   return (
     <div className={styles.board} role="region" aria-label="board">
-      {cellList.map((row, i) => (
+      {board.map((row, i) => (
         <ul className={styles.row} key={`row-${i}`}>
           {row.map((cell, j) => (
             <li className={styles.cellWrapper} key={`cell-${i}-${j}`}>

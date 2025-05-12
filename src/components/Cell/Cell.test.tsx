@@ -84,7 +84,6 @@ describe("Cell 닫힘", () => {
 });
 
 describe("Cell 깃발이 있을 때", () => {
-  const isFlag = true
   test("깃발이 표시된다.", () => {
     const { button } = renderCell({ isFlag: true });
 
