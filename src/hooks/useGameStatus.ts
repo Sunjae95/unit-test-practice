@@ -16,11 +16,9 @@ export const useGameStatus = (
   mineCount: number
 ) => {
   const [board, setBoard] = useState<CellType[][]>([]);
-
-  useEffect(() => {
-    const newBoard = generateBoard({ rows, cols, mineCount });
-    setBoard(newBoard);
-  }, [rows, cols, mineCount]);
+  const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">(
+    "playing"
+  );
 
   const toggleFlag = ({ row, column }: { row: number; column: number }) => {
     setBoard((board) => toggleBoard({ board, row, column }));
@@ -30,9 +28,43 @@ export const useGameStatus = (
     setBoard((board) => openCell({ board, row, column }));
   };
 
+  const onReset = () => {
+    const newBoard = generateBoard({ rows, cols, mineCount });
+    setBoard(newBoard);
+    setGameStatus("playing");
+  };
+
+  useEffect(() => {
+    onReset();
+  }, []);
+
+  useEffect(() => {
+    if (board.flat().find(({ isMine, isOpen }) => isMine && isOpen)) {
+      setGameStatus("lost");
+    }
+    if (
+      board.flat().filter(({ isMine, isFlag }) => isMine && isFlag).length ===
+      mineCount
+    ) {
+      setGameStatus("won");
+    }
+  }, [board, mineCount]);
+
+  useEffect(() => {
+    if (gameStatus === "lost") {
+      alert("패배");
+      onReset();
+    }
+    if (gameStatus === "won") {
+      alert("승리");
+      onReset();
+    }
+  }, [gameStatus]);
+
   return {
     board,
     toggleFlag,
     openCell: openBoard,
+    onReset,
   };
 };
