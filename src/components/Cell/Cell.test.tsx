@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { expect, test, vi, describe, afterEach } from "vitest";
+
 import { Cell } from "./Cell";
 import type { CellProps } from "./Cell";
 
@@ -7,8 +8,6 @@ const renderCell = (props?: Partial<CellProps>) => {
   const onClickSpy = vi.fn();
   const onClickContextSpy = vi.fn();
   const defaultProps: CellProps = {
-    row: 1,
-    column: 1,
     isFlag: false,
     isMine: false,
     isOpen: false,
@@ -60,26 +59,20 @@ describe("Cell 닫힘", () => {
     expect(button.textContent).toBe("");
   });
 
-  test("왼쪽 마우스 클릭 onClick 함수는 좌표가 인자로 전달되어 작동한다.", () => {
-    const row = 1;
-    const column = 2;
-    const { button, onClickSpy } = renderCell({ row, column });
+  test("왼쪽 마우스 클릭 onClick 함수가 작동한다.", () => {
+    const { button, onClickSpy } = renderCell();
 
     fireEvent.click(button);
 
     expect(onClickSpy).toHaveBeenCalledOnce();
-    expect(onClickSpy).toHaveBeenCalledWith({ row, column });
   });
 
-  test("오른쪽마우스 클릭 onClickContext 함수는 좌표가 인자로 전달되어 작동한다.", () => {
-    const row = 1;
-    const column = 2;
-    const { button, onClickContextSpy } = renderCell({ row, column });
+  test("오른쪽마우스 클릭 onClickContext 함수가 작동한다.", () => {
+    const { button, onClickContextSpy } = renderCell();
 
     fireEvent.contextMenu(button);
 
     expect(onClickContextSpy).toHaveBeenCalledOnce();
-    expect(onClickContextSpy).toHaveBeenCalledWith({ row, column });
   });
 });
 
@@ -99,18 +92,11 @@ describe("Cell 깃발이 있을 때", () => {
   });
 
   test("오른쪽마우스 클릭 onClickContext 함수는 좌표가 인자로 전달되어 작동한다.", () => {
-    const row = 1;
-    const column = 2;
-    const { button, onClickContextSpy } = renderCell({
-      isFlag: true,
-      row,
-      column,
-    });
+    const { button, onClickContextSpy } = renderCell({ isFlag: true });
 
     fireEvent.contextMenu(button);
 
     expect(onClickContextSpy).toHaveBeenCalledOnce();
-    expect(onClickContextSpy).toHaveBeenCalledWith({ row, column });
   });
 });
 

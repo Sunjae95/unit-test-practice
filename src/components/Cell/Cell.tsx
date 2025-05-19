@@ -1,16 +1,16 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import styles from "./Cell.module.css";
 
-import { CellType } from "../../domain/board";
-
-export interface CellProps extends CellType {
-  onClick: (params: { row: number; column: number }) => void;
-  onClickContext: (params: { row: number; column: number }) => void;
+export interface CellProps {
+  isOpen: boolean;
+  isFlag: boolean;
+  isMine: boolean;
+  mineCount: number;
+  onClick: () => void;
+  onClickContext: () => void;
 }
 
 export const Cell = ({
-  row,
-  column,
   isOpen,
   isFlag,
   isMine,
@@ -41,15 +41,19 @@ export const Cell = ({
     return classNames.join(" ");
   };
 
+  const handleOnClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+
+    if (isOpen) return;
+
+    onClickContext();
+  };
+
   return (
     <button
       className={getClassNames()}
-      onClick={() => onClick({ row, column })}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        if (isOpen) return;
-        onClickContext({ row, column });
-      }}
+      onClick={onClick}
+      onContextMenu={handleOnClick}
       disabled={isOpen || isFlag}
     >
       {getButtonText()}
