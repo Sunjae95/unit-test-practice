@@ -10,12 +10,16 @@ export type CellType = {
   mineCount: number;
 };
 
-export const useGameStatus = (
-  rows: number,
-  cols: number,
-  mineCount: number
-) => {
-  const [board, setBoard] = useState<CellType[][]>([]);
+export const useGameStatus = ({
+  initialBoard,
+}: {
+  initialBoard: CellType[][];
+}) => {
+  const rows = initialBoard.length;
+  const cols = initialBoard[0]?.length ?? 0;
+  const mineCount = initialBoard.flat().filter(({ isMine }) => isMine).length;
+
+  const [board, setBoard] = useState(initialBoard);
   const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">(
     "playing"
   );
@@ -33,10 +37,6 @@ export const useGameStatus = (
     setBoard(newBoard);
     setGameStatus("playing");
   };
-
-  useEffect(() => {
-    onReset();
-  }, []);
 
   useEffect(() => {
     if (board.flat().find(({ isMine, isOpen }) => isMine && isOpen)) {

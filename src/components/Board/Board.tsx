@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Cell, CellProps } from "../Cell/Cell";
-import { CellType } from "../../hooks/useGameStatus";
+import { CellType } from "../../domain/board";
 
 import styles from "./Board.module.css";
 

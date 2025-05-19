@@ -1,4 +1,11 @@
-import { CellType } from "../hooks/useGameStatus";
+export type CellType = {
+  row: number;
+  column: number;
+  isOpen: boolean;
+  isFlag: boolean;
+  isMine: boolean;
+  mineCount: number;
+};
 
 type GenerateBoardParams = { rows: number; cols: number; mineCount: number };
 

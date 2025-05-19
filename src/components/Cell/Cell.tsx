@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Cell.module.css";
 
-import { CellType } from "../../hooks/useGameStatus";
+import { CellType } from "../../domain/board";
 
 export interface CellProps extends CellType {
   onClick: (params: { row: number; column: number }) => void;
