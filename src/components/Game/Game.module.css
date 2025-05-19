@@ -10,3 +10,25 @@
   width: fit-content;
   margin: 32px auto;
 }
+
+.board {
+  display: inline-block; /* 보드를 딱 필요한 크기만큼 */
+  padding: 4px;
+  background-color: #999; /* 보드 테두리 느낌 */
+  border: 2px solid #666;
+  border-radius: 4px;
+}
+
+/* 한 줄 (ul) */
+.row {
+  display: flex; /* 가로로 나열 */
+  margin: 0;
+  padding: 0;
+  list-style: none; /* 기본 ul 스타일 제거 */
+}
+
+/* 한 칸 (li) */
+.cellWrapper {
+  margin: 0;
+  padding: 0;
+}
