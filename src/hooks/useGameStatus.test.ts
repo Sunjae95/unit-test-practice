@@ -34,9 +34,7 @@ test("깃발을 토글하면 허용깃발 개수가 변경된다.", () => {
     result.current.toggleFlag({ row: 0, column: 0 });
   });
 
-  expect(
-    result.current.board.flat().filter(({ isFlag }) => isFlag).length
-  ).toBe(1);
+  expect(result.current.hintCount).toBe(0);
 });
 
 test("지뢰가 존재하는 cell에 깃발이 모두 존재하면 승리한다.", () => {

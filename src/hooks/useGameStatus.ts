@@ -24,6 +24,13 @@ export const useGameStatus = ({
     "playing"
   );
 
+  const hintCount = board.reduce((total, row) => {
+    const mineCount = row.filter(({ isMine }) => isMine).length;
+    const flagCount = row.filter(({ isFlag }) => isFlag).length;
+
+    return total + mineCount - flagCount;
+  }, 0);
+
   const toggleFlag = ({ row, column }: { row: number; column: number }) => {
     setBoard((board) => toggleBoard({ board, row, column }));
   };
@@ -63,6 +70,7 @@ export const useGameStatus = ({
 
   return {
     board,
+    hintCount,
     toggleFlag,
     openCell: openBoard,
     onReset,
