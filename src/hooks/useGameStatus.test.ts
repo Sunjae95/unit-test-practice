@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
+import { expect, test, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 
 import { useGameStatus } from "./useGameStatus";
@@ -15,20 +15,13 @@ const createBaseMockBoard = () =>
     }))
   );
 
-beforeEach(() => {
-  vi.clearAllMocks();
-  vi.spyOn(window, "alert").mockImplementation(() => {});
-});
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
-
 test("깃발을 토글하면 허용깃발 개수가 변경된다.", () => {
   const initialBoard = createBaseMockBoard();
   initialBoard[0][1].isMine = true;
 
-  const { result } = renderHook(() => useGameStatus({ initialBoard }));
+  const { result } = renderHook(() =>
+    useGameStatus({ initialBoard, onGameEnd: () => {} })
+  );
 
   act(() => {
     result.current.toggleFlag({ row: 0, column: 0 });
@@ -40,34 +33,44 @@ test("깃발을 토글하면 허용깃발 개수가 변경된다.", () => {
 test("지뢰가 존재하는 cell에 깃발이 모두 존재하면 승리한다.", () => {
   const initialBoard = createBaseMockBoard();
   initialBoard[0][0].isMine = true;
+  const onGameEnd = vi.fn();
 
-  const { result } = renderHook(() => useGameStatus({ initialBoard }));
+  const { result } = renderHook(() =>
+    useGameStatus({ initialBoard, onGameEnd })
+  );
 
   act(() => {
     result.current.toggleFlag({ row: 0, column: 0 });
   });
 
-  expect(window.alert).toHaveBeenCalledWith("승리");
+  expect(onGameEnd).toHaveBeenCalledOnce();
+  expect(onGameEnd).toHaveBeenCalledWith("won");
 });
 
 test("지뢰를 발견하면 패배한다.", () => {
   const initialBoard = createBaseMockBoard();
   initialBoard[0][0].isMine = true;
+  const onGameEnd = vi.fn();
 
-  const { result } = renderHook(() => useGameStatus({ initialBoard }));
+  const { result } = renderHook(() =>
+    useGameStatus({ initialBoard, onGameEnd })
+  );
 
   act(() => {
     result.current.openCell({ row: 0, column: 0 });
   });
 
-  expect(window.alert).toHaveBeenCalledWith("패배");
+  expect(onGameEnd).toHaveBeenCalledOnce();
+  expect(onGameEnd).toHaveBeenCalledWith("lost");
 });
 
 test("게임을 재시작한다.", () => {
   const initialBoard = createBaseMockBoard();
   initialBoard[0][0].isMine = true;
 
-  const { result } = renderHook(() => useGameStatus({ initialBoard }));
+  const { result } = renderHook(() =>
+    useGameStatus({ initialBoard, onGameEnd: () => {} })
+  );
 
   act(() => {
     result.current.toggleFlag({ row: 0, column: 1 });
