@@ -6,10 +6,18 @@ import { useGameStatus } from "../../hooks/useGameStatus";
 import { Info } from "../Info/Info";
 import { Cell } from "../Cell/Cell";
 
+const RESULT_MAP = {
+  won: "승리",
+  lost: "패배",
+};
+
 export const Game = () => {
   const initialBoard = generateBoard({ rows: 5, cols: 5, mineCount: 4 });
   const { board, hintCount, openCell, toggleFlag, onReset } = useGameStatus({
     initialBoard,
+    onGameEnd: (result) => {
+      alert(RESULT_MAP[result]);
+    },
   });
 
   return (

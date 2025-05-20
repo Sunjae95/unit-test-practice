@@ -10,19 +10,21 @@ export type CellType = {
   mineCount: number;
 };
 
+type GameStatusType = "playing" | "won" | "lost";
+
 export const useGameStatus = ({
   initialBoard,
+  onGameEnd,
 }: {
   initialBoard: CellType[][];
+  onGameEnd: (result: Exclude<GameStatusType, "playing">) => void;
 }) => {
   const rows = initialBoard.length;
   const cols = initialBoard[0]?.length ?? 0;
   const mineCount = initialBoard.flat().filter(({ isMine }) => isMine).length;
 
   const [board, setBoard] = useState(initialBoard);
-  const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">(
-    "playing"
-  );
+  const [gameStatus, setGameStatus] = useState<GameStatusType>("playing");
 
   const hintCount = board.reduce((total, row) => {
     const mineCount = row.filter(({ isMine }) => isMine).length;
@@ -58,14 +60,10 @@ export const useGameStatus = ({
   }, [board, mineCount]);
 
   useEffect(() => {
-    if (gameStatus === "lost") {
-      alert("패배");
-      onReset();
-    }
-    if (gameStatus === "won") {
-      alert("승리");
-      onReset();
-    }
+    if (gameStatus === "playing") return;
+
+    onGameEnd(gameStatus);
+    onReset();
   }, [gameStatus]);
 
   return {
