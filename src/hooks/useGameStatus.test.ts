@@ -1,4 +1,4 @@
-import { expect, test, vi } from "vitest";
+import { expect, test, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 
 import { useGameStatus } from "./useGameStatus";
@@ -14,6 +14,12 @@ const createBaseMockBoard = () =>
       mineCount: 0,
     }))
   );
+
+beforeEach(() => {
+  localStorage.clear();
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date("2024-05-27T12:00:00Z"));
+});
 
 test("깃발을 토글하면 허용깃발 개수가 변경된다.", () => {
   const initialBoard = createBaseMockBoard();
@@ -45,6 +51,11 @@ test("지뢰가 존재하는 cell에 깃발이 모두 존재하면 승리한다.
 
   expect(onGameEnd).toHaveBeenCalledOnce();
   expect(onGameEnd).toHaveBeenCalledWith("won");
+
+  const saved = JSON.parse(localStorage.getItem("record") ?? "");
+  expect(saved.length).toBe(1);
+  expect(saved[0].id).toBe(Date.now());
+  expect(saved[0].status).toBe("won");
 });
 
 test("지뢰를 발견하면 패배한다.", () => {
@@ -62,6 +73,10 @@ test("지뢰를 발견하면 패배한다.", () => {
 
   expect(onGameEnd).toHaveBeenCalledOnce();
   expect(onGameEnd).toHaveBeenCalledWith("lost");
+  const saved = JSON.parse(localStorage.getItem("record") ?? "");
+  expect(saved.length).toBe(1);
+  expect(saved[0].id).toBe(Date.now());
+  expect(saved[0].status).toBe("lost");
 });
 
 test("게임을 재시작한다.", () => {

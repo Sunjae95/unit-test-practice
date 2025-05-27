@@ -61,9 +61,25 @@ export const useGameStatus = ({
 
   useEffect(() => {
     if (gameStatus === "playing") return;
+    // 백업
+    const recordJSON = localStorage.getItem("record");
+    const backup = recordJSON ?? "[]";
+    const record = recordJSON ? JSON.parse(recordJSON) : [];
 
-    onGameEnd(gameStatus);
-    onReset();
+    try {
+      // 트랜잭션 시작 & 커밋
+      localStorage.setItem(
+        "record",
+        JSON.stringify([...record, { id: Date.now(), status: gameStatus }])
+      );
+
+      // 후처리
+      onGameEnd(gameStatus);
+      onReset();
+    } catch {
+      localStorage.setItem("record", backup);
+      onReset();
+    }
   }, [gameStatus]);
 
   return {
