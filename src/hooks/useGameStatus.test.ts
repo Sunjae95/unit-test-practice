@@ -36,7 +36,7 @@ test("깃발을 토글하면 허용깃발 개수가 변경된다.", () => {
   expect(result.current.hintCount).toBe(0);
 });
 
-test("지뢰가 존재하는 cell에 깃발이 모두 존재하면 승리한다.", () => {
+test("지뢰가 존재하는 cell에 깃발이 모두 존재하면 승리한다.", async () => {
   const initialBoard = createBaseMockBoard();
   initialBoard[0][0].isMine = true;
   const onGameEnd = vi.fn();
@@ -45,20 +45,15 @@ test("지뢰가 존재하는 cell에 깃발이 모두 존재하면 승리한다.
     useGameStatus({ initialBoard, onGameEnd })
   );
 
-  act(() => {
+  await act(() => {
     result.current.toggleFlag({ row: 0, column: 0 });
   });
 
   expect(onGameEnd).toHaveBeenCalledOnce();
   expect(onGameEnd).toHaveBeenCalledWith("won");
-
-  const saved = JSON.parse(localStorage.getItem("record") ?? "");
-  expect(saved.length).toBe(1);
-  expect(saved[0].id).toBe(Date.now());
-  expect(saved[0].status).toBe("won");
 });
 
-test("지뢰를 발견하면 패배한다.", () => {
+test("지뢰를 발견하면 패배한다.", async () => {
   const initialBoard = createBaseMockBoard();
   initialBoard[0][0].isMine = true;
   const onGameEnd = vi.fn();
@@ -67,16 +62,12 @@ test("지뢰를 발견하면 패배한다.", () => {
     useGameStatus({ initialBoard, onGameEnd })
   );
 
-  act(() => {
+  await act(async () => {
     result.current.openCell({ row: 0, column: 0 });
   });
 
   expect(onGameEnd).toHaveBeenCalledOnce();
   expect(onGameEnd).toHaveBeenCalledWith("lost");
-  const saved = JSON.parse(localStorage.getItem("record") ?? "");
-  expect(saved.length).toBe(1);
-  expect(saved[0].id).toBe(Date.now());
-  expect(saved[0].status).toBe("lost");
 });
 
 test("게임을 재시작한다.", () => {

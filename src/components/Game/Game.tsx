@@ -9,6 +9,7 @@ import { Cell } from "../Cell/Cell";
 const RESULT_MAP = {
   won: "승리",
   lost: "패배",
+  error: "오류가 있어 저장되지 않았습니다.",
 };
 
 export const Game = () => {

@@ -17,7 +17,7 @@ export const useGameStatus = ({
   onGameEnd,
 }: {
   initialBoard: CellType[][];
-  onGameEnd: (result: Exclude<GameStatusType, "playing">) => void;
+  onGameEnd: (result: "won" | "lost") => void;
 }) => {
   const rows = initialBoard.length;
   const cols = initialBoard[0]?.length ?? 0;
@@ -61,25 +61,9 @@ export const useGameStatus = ({
 
   useEffect(() => {
     if (gameStatus === "playing") return;
-    // 백업
-    const recordJSON = localStorage.getItem("record");
-    const backup = recordJSON ?? "[]";
-    const record = recordJSON ? JSON.parse(recordJSON) : [];
 
-    try {
-      // 트랜잭션 시작 & 커밋
-      localStorage.setItem(
-        "record",
-        JSON.stringify([...record, { id: Date.now(), status: gameStatus }])
-      );
-
-      // 후처리
-      onGameEnd(gameStatus);
-      onReset();
-    } catch {
-      localStorage.setItem("record", backup);
-      onReset();
-    }
+    onGameEnd(gameStatus);
+    onReset();
   }, [gameStatus]);
 
   return {
