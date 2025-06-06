@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./History.module.css";
 import { GameHistoryType } from "../../domain/repository/GameHistoryRepository";
 

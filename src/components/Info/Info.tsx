@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./Info.module.css";
 
 export interface InfoProps {

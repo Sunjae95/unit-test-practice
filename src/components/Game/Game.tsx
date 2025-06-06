@@ -1,5 +1,3 @@
-import React from "react";
-
 import { LocalStorageGameHistoryRepository } from "../../infra/LocalStorageGameHistory";
 
 import { useGameStatus } from "../../hooks/useGameStatus";

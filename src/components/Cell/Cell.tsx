@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 import styles from "./Cell.module.css";
 
 export interface CellProps {
