@@ -7,6 +7,19 @@ interface HistoryProps {
 }
 
 export const History = ({ histories, onDelete }: HistoryProps) => {
+  const convertDate = (value: string) => {
+    const date = new Date(Number(value));
+    const pad = (n: number) => String(n).padStart(2, "0");
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1); // 0-based
+    const day = pad(date.getDate());
+    const hour = pad(date.getHours());
+    const minute = pad(date.getMinutes());
+
+    return `${year}-${month}-${day}-${hour}:${minute}`;
+  };
+
   return (
     <div className={styles.history}>
       <h2 className={styles.historyTitle}>게임 기록</h2>
@@ -16,7 +29,7 @@ export const History = ({ histories, onDelete }: HistoryProps) => {
         <ul className={styles.historyList}>
           {histories.map(({ id, status, createdAt }) => (
             <li key={id} className={styles.historyItem}>
-              <span>{new Date(createdAt).toLocaleString()}</span>
+              <span>{convertDate(createdAt)}</span>
               <span>{status === "won" ? "승리" : "패배"}</span>
               <button onClick={() => onDelete(id)}>삭제</button>
             </li>
